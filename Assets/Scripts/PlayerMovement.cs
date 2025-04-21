@@ -1,11 +1,14 @@
 using System;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb2d;
+    private Vector2 moveInput;
     private float move; //walk left-right
     [SerializeField] private float speed;
+    
     [SerializeField] private float jumpForce; //jump
     private bool isJumping;
     
@@ -17,8 +20,11 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         //walk left-right
-        move = Input.GetAxis("Horizontal");
-        rb2d.linearVelocity = new Vector2(move * speed, rb2d.linearVelocity.y);
+        moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        rb2d.AddForce(moveInput * speed);
+        
+        //move = Input.GetAxis("Horizontal");
+        //rb2d.linearVelocity = new Vector2(move * speed, rb2d.linearVelocity.y);
         
         //jump
         if (Input.GetButtonDown("Jump") && !isJumping)
