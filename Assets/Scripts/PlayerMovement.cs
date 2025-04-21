@@ -36,16 +36,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
         if (other.gameObject.CompareTag("Floor"))
         {
             isJumping = false;
         }
+        else if (other.gameObject.CompareTag("Obstacle"))
+        {
+            gameManager.GameOver();
+        }
+        else if (other.gameObject.CompareTag("Goal"))
+        {
+            gameManager.GameWin();
+        }
     }
+
     private void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Floor"))
         {
             isJumping = true;
         }
-    }   
+    }
 }
